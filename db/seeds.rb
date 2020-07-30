@@ -9,8 +9,22 @@
 require 'faker'
 
 User.destroy_all
+Rumor.destroy_all
+Tag.destroy_all
 
 10.times do
   User.create(first_name: Faker::Name.first_name, last_name: Faker::Name.last_name, description: Faker::Lorem.sentence(word_count: 5), email: Faker::Internet.email, age: Faker::Number.within(range: 1..110), 
   city: City.create(name: Faker::Address.city, zip_code: Faker::Address.zip))
+end
+
+20.times do
+  user = User.all[rand(0..9)]
+  user.rumors << Rumor.create(title: Faker::App.name, content: Faker::Quote.yoda)
+  user.rumors.first.tags << Tag.create(title: Faker::JapaneseMedia::DragonBall.character)
+end
+
+10.times do
+  user1 = User.all[rand(0..9)]
+  user2 = User.all[rand(0..9)]
+  PrivateMessage.create(content: Faker::TvShows::RickAndMorty.quote, recipient: user2, sender: user1)
 end
